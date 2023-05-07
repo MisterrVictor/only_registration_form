@@ -1,13 +1,19 @@
 <?php
-ini_set('session.gc_maxlifetime',5); //600
-ini_set('session.gc_probability',100);
+ini_set('session.gc_maxlifetime', 5); //600
+ini_set('session.gc_probability', 100);
 session_start();
 require_once 'Database.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
-    $name = $_POST['name'];
-    $phone = $_POST['phone'];
-    $email = $_POST['email'];
+    $name = isset($_POST['name']) ? $_POST['name'] : '';
+    $name = htmlentities(filter_var($name, FILTER_SANITIZE_STRING));
+
+    $phone = isset($_POST['phone']) ? $_POST['phone'] : '';
+    $phone = htmlentities(filter_var($phone, FILTER_SANITIZE_NUMBER_INT));
+
+    $email = isset($_POST['email']) ? $_POST['email'] : '';
+    $email = htmlentities(filter_var($email, FILTER_SANITIZE_EMAIL));
+    
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
@@ -64,19 +70,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
         <form method="POST">
             <label for="name">Имя</label>
             <input id="name" type="text" name="name" required><br/>
-
+            
             <label for="phone">Телефон</label>
-            <input id="phone" type="tel" name="phone" pattern="[0-9]{10}" required><br/>
-
+            <input id="phone" type="tel" name="phone" required><br/>
+            
             <label for="email">Почта</label>
             <input id="email" type="email" name="email" required><br/>
-
+           
             <label for="password">Пароль</label>
             <input id="password" type="password" name="password" required><br/>
-
+            
             <label for="confirm_password">Повторите пароль</label>
             <input id="confirm_password" type="password" name="confirm_password" required><br/>
-
+            <br><br>
             <input type="submit" name="submit" value="Зарегистрироваться">
         </form>
     </body>
